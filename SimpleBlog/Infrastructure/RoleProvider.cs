@@ -11,7 +11,7 @@ namespace SimpleBlog.Infrastructure
         public override string[] GetRolesForUser(string username)
         {
             //NOTE: This will be updated to be database driven later
-            if(username == "correct name")
+            if(username == "nelson")
                 return new[] {"admin"};
             //if user not correct user then they are nothing
             return new string[] {};

@@ -14,14 +14,28 @@ namespace SimpleBlog.Models
 {
     public class User
     {
+
+        private const int WorkFactor = 13;
+        //This is used to prevent timing attacks when the user is null
+        public static void FakeHash()
+        {
+            BCrypt.Net.BCrypt.HashPassword("", WorkFactor);
+        }
+
+
         public virtual int Id { get; set; }
         public virtual string Username { get; set; }
         public virtual string Email { get; set; }
         public virtual string PasswordHash { get; set; }
 
         public virtual void SetPassword(string password)
+        {   //Use BCrypt to hash the password with a work factor of 13
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(password, WorkFactor);
+        }
+        // checks if the password entered into the form is the same as the one stored in the DB
+        public virtual bool CheckPassword(string password)
         {
-            PasswordHash = "IGNORE ME";
+            return BCrypt.Net.BCrypt.Verify(password, PasswordHash);
         }
     }
 

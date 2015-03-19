@@ -1,5 +1,8 @@
-﻿using System.Web.Security;
+﻿using System.Linq;
+using System.Web.Security;
 using System.Web.WebPages;
+using NHibernate.Linq;
+using SimpleBlog.Models;
 using SimpleBlog.ViewModels;
 using System.Web.Mvc;
 
@@ -24,21 +27,32 @@ namespace SimpleBlog.Controllers
         }
 
        [HttpPost]
-        public ActionResult Login(AuthLogin form, string returnURL)
+        public ActionResult Login(AuthLogin form, string returnUrl)
        {
+           var user = Database.Session.Query<User>().FirstOrDefault(u => u.Username == form.Username);
+
+           if (user == null)
+           {
+               SimpleBlog.Models.User.FakeHash();
+           }
+           
+           if (user == null || !user.CheckPassword(form.Password))
+           {
+               ModelState.AddModelError("Username", "Username or password is incorrect");
+           }
+           
            if (!ModelState.IsValid)
            {
                return View(form);
            }
-
            //create persistant cookie for authentication
            //all encryption and hashing is handled by asp.net
-           FormsAuthentication.SetAuthCookie(form.Username,true);
+           FormsAuthentication.SetAuthCookie(user.Username,true);
 
            //if return url exists in the query string redirect the user to that url
            // This code will be updated to be database driven later
-           if (!string.IsNullOrWhiteSpace((returnURL)))
-               return Redirect(returnURL);
+           if (!string.IsNullOrWhiteSpace((returnUrl)))
+               return Redirect(returnUrl);
 
            return RedirectToRoute("home");
        }
