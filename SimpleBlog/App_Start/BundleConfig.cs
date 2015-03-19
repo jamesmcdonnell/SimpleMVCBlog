@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Http;
 using System.Web.Optimization;
 
 namespace SimpleBlog
@@ -27,7 +28,8 @@ namespace SimpleBlog
                 .Include("~/scripts/jquery-2.1.3.js")
                 .Include("~/scripts/jquery.validate.js")
                 .Include("~/scripts/jquery.validate.unobtrusive.js")
-                .Include("~/scripts/bootsrap.js"));
+                .Include("~/scripts/bootsrap.js")
+                .Include("~/areas/admin/scripts/Forms.js"));
 
             bundles.Add(new ScriptBundle("~/scripts")
                 .Include("~/scripts/jquery-2.1.3.js")
