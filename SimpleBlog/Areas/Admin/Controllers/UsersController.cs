@@ -28,7 +28,7 @@ namespace SimpleBlog.Areas.Admin.Controllers
             });
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public ActionResult New(UsersNew form)
         {
             if(Database.Session.Query<User>().Any(u => u.Username == form.Username))
@@ -67,7 +67,7 @@ namespace SimpleBlog.Areas.Admin.Controllers
             } );
         }// end Action Edit()
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public ActionResult Edit(int id, UsersEdit form)
         {
             //retreive the user from the DB
@@ -104,7 +104,7 @@ namespace SimpleBlog.Areas.Admin.Controllers
             });
         }
 
-        [HttpPost]
+        [HttpPost,ValidateAntiForgeryToken]
         public ActionResult ResetPassword(int id, UsersResetPassword form)
         {
             var user = Database.Session.Load<User>(id);
@@ -127,7 +127,7 @@ namespace SimpleBlog.Areas.Admin.Controllers
         }
 
         //Action for Delete Link
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
             var user = Database.Session.Load<User>(id);

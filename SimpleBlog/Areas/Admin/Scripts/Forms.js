@@ -12,10 +12,16 @@ $(document).ready(function () {
         if (message && !confirm(message))
             return;
 
+        //var antiForgeryToken = $("anti-forgery-form").find("input").val();
+        //var antiForgeryInput = $("<input type ='hidden' name =''>").val(antiForgeryToken);
+        var antiForgeryToken = $("#anti-forgery-form input");
+        var antiForgeryInput = $("<input type ='hidden'>").attr("name", antiForgeryToken.attr("name")).val(antiForgeryToken.val());
+
         //if no message and user clicks 'ok', then we post to the end point of this link
         $("<form>")      //create a form
             .attr("method", "post")
             .attr("action", $this.attr("href")) //set its action to wherever th link was pointing to
+            .append(antiForgeryInput)
             .appendTo(document.body)
             .submit();  //and submit the form
     });
